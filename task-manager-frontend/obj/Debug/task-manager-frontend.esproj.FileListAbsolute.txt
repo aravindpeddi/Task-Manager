@@ -1,0 +1,1 @@
+D:\ex_pro\task-manager-frontend\obj\Debug\task-manager-frontend.esproj.CoreCompileInputs.cache

@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35828.75
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManagerAPI", "TaskManagerAPI.csproj", "{B21B1D98-880E-48FC-8B08-665F927C9D13}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "task-manager-frontend", "..\task-manager-frontend\task-manager-frontend.esproj", "{4F398B65-E02B-F343-D0B1-ACFA38316EDE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B21B1D98-880E-48FC-8B08-665F927C9D13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B21B1D98-880E-48FC-8B08-665F927C9D13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B21B1D98-880E-48FC-8B08-665F927C9D13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B21B1D98-880E-48FC-8B08-665F927C9D13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F398B65-E02B-F343-D0B1-ACFA38316EDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F398B65-E02B-F343-D0B1-ACFA38316EDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F398B65-E02B-F343-D0B1-ACFA38316EDE}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{4F398B65-E02B-F343-D0B1-ACFA38316EDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F398B65-E02B-F343-D0B1-ACFA38316EDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F398B65-E02B-F343-D0B1-ACFA38316EDE}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {377632F9-198D-458A-82D8-7CC82E750A5F}
+	EndGlobalSection
+EndGlobal
