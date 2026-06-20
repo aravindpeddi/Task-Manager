@@ -1,5 +1,5 @@
-Example proj for hands-on
-
+Example proj
+Just for learning new thing hands-on
 
 commands
 frontend - npm run dev --> in terminal of frontend --> http://localhost:58173/
