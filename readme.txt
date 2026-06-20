@@ -1,4 +1,3 @@
-This is a testing proj for soing experiments and for learning hands-on
 
 commands
 frontend - npm run dev --> in terminal of frontend --> http://localhost:58173/
