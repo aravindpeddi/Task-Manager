@@ -1,5 +1,5 @@
 Example proj
-Just for learning new thing hands-on
+Just for learning new things hands-on
 
 commands
 frontend - npm run dev --> in terminal of frontend --> http://localhost:58173/
