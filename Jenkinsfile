@@ -8,6 +8,7 @@ pipeline{
 
       steps{
         echo "Build Success"
+        echo "Done change 1"
       }
     }
     
