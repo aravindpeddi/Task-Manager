@@ -1,9 +1,6 @@
-﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using TaskManagerAPI.Data;
 
 namespace TaskManagerAPI.Services
@@ -11,35 +8,97 @@ namespace TaskManagerAPI.Services
     public class DailyResetService : BackgroundService
     {
         private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger<DailyResetService> _logger;
 
-        public DailyResetService(IServiceProvider serviceProvider)
+        public DailyResetService(
+            IServiceProvider serviceProvider,
+            ILogger<DailyResetService> logger)
         {
             _serviceProvider = serviceProvider;
+            _logger = logger;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(
+            CancellationToken stoppingToken)
         {
+            _logger.LogInformation(
+                "Daily reset service started."
+            );
+
             while (!stoppingToken.IsCancellationRequested)
             {
                 var now = DateTime.Now;
-                var nextRunTime = DateTime.Today.AddDays(1); // Midnight of next day
-                var delay = nextRunTime - now;
 
-                await Task.Delay(delay, stoppingToken);
+                // Calculate the next midnight
+                var nextMidnight = now.Date.AddDays(1);
 
-                using (var scope = _serviceProvider.CreateScope())
+                var delay = nextMidnight - now;
+
+                _logger.LogInformation(
+                    "Next automatic task reset scheduled for {NextMidnight}.",
+                    nextMidnight
+                );
+
+                try
                 {
-                    var context = scope.ServiceProvider.GetRequiredService<TaskDbContext>();
+                    await Task.Delay(
+                        delay,
+                        stoppingToken
+                    );
+                }
+                catch (OperationCanceledException)
+                    when (stoppingToken.IsCancellationRequested)
+                {
+                    break;
+                }
 
-                    var tasks = await context.Tasks.ToListAsync(stoppingToken);
-                    foreach (var task in tasks)
-                    {
-                        task.IsCompleted = false;
-                    }
-
-                    await context.SaveChangesAsync(stoppingToken);
+                try
+                {
+                    await ResetTasksAsync(
+                        stoppingToken
+                    );
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(
+                        ex,
+                        "Failed to reset daily tasks."
+                    );
                 }
             }
+
+            _logger.LogInformation(
+                "Daily reset service stopped."
+            );
+        }
+
+        private async Task ResetTasksAsync(
+            CancellationToken stoppingToken)
+        {
+            using var scope =
+                _serviceProvider.CreateScope();
+
+            var context =
+                scope.ServiceProvider
+                    .GetRequiredService<TaskDbContext>();
+
+            var resetCount =
+                await context.Tasks
+                    .Where(task => task.IsCompleted)
+                    .ExecuteUpdateAsync(
+                        setters =>
+                            setters.SetProperty(
+                                task => task.IsCompleted,
+                                false
+                            ),
+                        stoppingToken
+                    );
+
+            _logger.LogInformation(
+                "Daily task reset completed. " +
+                "{ResetCount} completed tasks were reset.",
+                resetCount
+            );
         }
     }
 }

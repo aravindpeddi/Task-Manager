@@ -2,9 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using TaskManagerAPI.Data;
 using TaskManagerAPI.Services;
 
-using DotNetEnv; // Add this package via NuGet
-
-Env.Load(); // Loads the .env file
 
 var builder = WebApplication.CreateBuilder(args);
 
