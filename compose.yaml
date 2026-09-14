@@ -1,0 +1,45 @@
+services:
+
+  sql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
+
+    ports:
+      - "1433:1433"
+
+    volumes:
+      - taskmanager-sql-data:/var/opt/mssql
+
+  api:
+    build:
+      context: ./TaskManagerAPI
+      dockerfile: Dockerfile
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Server=sql,1433;Database=TaskDB;User Id=sa;Password=${MSSQL_SA_PASSWORD};TrustServerCertificate=True;"
+
+    depends_on:
+      - sql
+
+  frontend:
+    build:
+      context: ./task-manager-frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: http://localhost:8080/api
+
+    ports:
+      - "5173:80"
+
+    depends_on:
+      - api
+
+volumes:
+  taskmanager-sql-data:
